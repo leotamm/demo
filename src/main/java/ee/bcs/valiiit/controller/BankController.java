@@ -1,114 +1,72 @@
 package ee.bcs.valiiit.controller;
 
+import ee.bcs.valiiit.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+// Controller is running the program at annotation level only
+// annotated with @Controller or @RestController
+// @GetMapping, @PostMapping, @PutMapping endpoints
+// service injected into controller with @Autowired
 
 @RestController
-@RequestMapping("bank")
 
 public class BankController {
 
-    private Map<String, BigDecimal> account = new HashMap<>();   // paremale keerukam objekt enama infoga
-    private Map<String, Account> accounts = new HashMap<>();
-    BigDecimal money = new BigDecimal(0);
-    BigDecimal minBalance = new BigDecimal(0);
+    @Autowired
+    AccountService accountService;
 
-    // createAccount (accountNr)                            CORRECT
-    @PostMapping("newAccount")
-    public String createAccount(@RequestBody String accountNr) {
-        accounts.put(accountNr, new Account(accountNr));
-        String replyYes = "Account created";
-        return replyYes;
+    // createAccount (accountNr)                                        TEST OK!
+    @PostMapping("bank/newAccount")
+    public String createAccount(@RequestBody String accountNr,
+                                @RequestParam("name") String name,
+                                @RequestParam("address") String address) {
+        return accountService.createAccount(accountNr, name, address);
     }
 
-    // check all accounts                                   CORRECT
-    @GetMapping("checkAccounts")
-    public Map<String, Account> checkBankAccounts() {
-        return accounts;
+    // getAccountBalance (accountNr)                                    TEST OK!
+    @GetMapping("bank/checkAccount/{id1}")
+    public BigDecimal checkBankAccount(@PathVariable("id1") String accountNr) {
+        return accountService.checkBankAccount(accountNr);
     }
 
-    // depositMoney (accountNr, money)                      CORRECT
-    @PutMapping("depositToAccount/{id1}")
-    public String depositMoney(@PathVariable("id1") String accountNr,
-                               @RequestParam("money") BigDecimal money) {
-        Account account = accounts.get(accountNr);
-        BigDecimal oldValue = account.getBalance();
-        BigDecimal newValue = oldValue.add(money);
-        account.setBalance(newValue);
-        accounts.put(accountNr, account);
-        String replyYes = "Money deposited, new balance: ";
-        return replyYes + account.getBalance();
+    // check all accounts                                               TEST FAIL
+    @GetMapping("bank/checkAccounts")
+    public List getHistory() {
+        return accountService.getHistory();
     }
 
-    // withdrawMoney (accountMoney, money))                 CORRECT
-    @PutMapping("withdrawFromAccount/{id1}")
-    public String withdrawMoney(@PathVariable("id1") String accountNr,
-                                @RequestParam("money") BigDecimal money) {
-        Account account = accounts.get(accountNr);
-        BigDecimal oldValue = account.getBalance();
-
-        if (money.compareTo(oldValue) > 0) {
-            String replyNo = "Denied - insufficient funds";
-            return replyNo;
-        } else {
-            BigDecimal newValue = oldValue.subtract(money);
-            account.setBalance(newValue);
-            accounts.put(accountNr, account);
-        }
-        String replyYes = "Money withdrawn, new balance: ";
-        return replyYes + account.getBalance();
+    // depositMoney (accountNr, money)                                  TEST OK!
+    @PutMapping("bank/depositToAccount/{id1}")
+    public void depositMoney(@PathVariable("id1") String accountNr,
+                             @RequestParam("money") BigDecimal money) {
+        accountService.depositMoney(accountNr, money);
     }
 
-    // transferMoney (fromAccount), toAccount, money        CORRECT
-    @PutMapping("transfer/{id1}/{id2}")
-    public String transferMoney(@PathVariable("id1") String fromAccountNr,
-                                @PathVariable("id2") String toAccountNr,
-                                @RequestParam("money") BigDecimal money) {
-
-        Account accountFrom = accounts.get(fromAccountNr);
-        BigDecimal oldValue = accountFrom.getBalance();
-        Account toAccount = accounts.get(toAccountNr);
-        BigDecimal oldValue2 = toAccount.getBalance();
-
-        if (money.compareTo(oldValue) > 0) {
-            String replyNo = "Transfer denied - insufficient funds";
-            return replyNo;
-        } else {
-            BigDecimal newValue = oldValue.subtract(money); // deducts from one account
-            accountFrom.setBalance(newValue);
-            accounts.put(fromAccountNr, accountFrom);
-
-            BigDecimal newValue2 = oldValue2.add(money);    // adds to another account
-            toAccount.setBalance(newValue2);
-            accounts.put(toAccountNr, toAccount);
-            String replyYes = "Money transferred, new balance: ";
-            return replyYes + toAccount.getBalance();
-        }
+    // withdrawMoney (accountMoney, money))                             TEST OK!
+    @PutMapping("bank/withdrawFromAccount/{id1}")
+    public void withdrawMoney(@PathVariable("id1") String accountNr,
+                              @RequestParam("money") BigDecimal money) {
+        accountService.withdrawMoney(accountNr, money);
     }
 
-    // getAccountBalance (accountNr)                        // CORRECT
-    @GetMapping("checkAccount/{id1}")
-    public String checkBankAccount(@PathVariable("id1") String accountNr) {
-        Account account = accounts.get(accountNr);
-        BigDecimal balance = account.getBalance();
-
-        if (balance.compareTo(minBalance) <= 0) {
-            String replyNo = "There are no funds on the account";
-            return replyNo;
-        } else {
-            String replyYes = "Your balance is: ";
-            return replyYes + balance;
-        }
+    // transferMoney (fromAccount), toAccount, money                    TEST OK!
+    @PutMapping("bank/transfer/{id1}/{id2}")
+    public void transferMoney(@PathVariable("id1") String fromAccountNr,
+                              @PathVariable("id2") String toAccountNr,
+                              @RequestParam("money") BigDecimal money) {
+        accountService.transferMoney(fromAccountNr, toAccountNr, money);
+    }
+    // getBalanceHistory(accountNr)                                     DONE, NEEDS TESTING
+    @GetMapping("bank/accountHistory/{id1}")
+    public List checkHistory(@PathVariable("id1") String fromAccountNr) {
+        return accountService.checkHistory(fromAccountNr);
     }
 
-    //
     // createClient(firstName, lastName, .....)
     // muuta createAccount (clientId, accountNr)
-    // getBalanceHistory(accountNr)
-
 
 }
-

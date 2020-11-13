@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="leo" id="changelog-1.0">
+        <createTable tableName="account">
+            <column name="account_nr" type="text">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+            <column name="balance" type="bigint">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="customer">
+            <column name="customer_id" type="bigint" autoIncrement="true">
+                <constraints nullable="true" primaryKey="true" unique="false"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+            <column name="address" type="text">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="transaction">
+            <column name="type" type="text">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+            <column name="money" type="bigint">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+            <column name="from_account" type="text">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+            <column name="to_account" type="text">
+                <constraints nullable="true" primaryKey="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

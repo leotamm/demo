@@ -1,4 +1,4 @@
-package ee.bcs.valiiit.controller;
+package ee.bcs.valiiit;
 
 import java.io.File;
 import java.io.FileNotFoundException;
