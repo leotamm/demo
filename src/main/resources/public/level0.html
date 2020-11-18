@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Sample Javascript Fundamental Exercises">
+    <title>Exercises</title>
+</head>
+<body>
+
+Random number from 0 to 10
+<table id="randomTable" border="1"></table>
+<script>
+    let randomNumber = Math.random()*10;
+    let rowElement = document.createElement("tr");
+    let cellElement = document.createElement("td");
+    rowElement.append(cellElement);
+    cellElement.innerText = randomNumber;
+    randomTable.append(rowElement);
+</script>
+<br><br>
+
+<input id="input" type="number">
+<button id="myButton">Pi korrutis</button>
+<table id="myTable" border="1"></table>
+<script>
+    myButton.onclick = function () {
+        let doublePiValue = 3.14;
+        let multiplier = document.getElementById("input").value;
+        result = doublePiValue * multiplier;
+        let rowElement = document.createElement("tr");
+        let cellElement = document.createElement("td");
+        rowElement.append(cellElement);
+        cellElement.innerText = result;
+        myTable.append(rowElement);
+    }
+</script>
+<br><br>
+
+
+
+
+</body>
+</html>

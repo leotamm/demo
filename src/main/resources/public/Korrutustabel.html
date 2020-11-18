@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="myInput1" type="number">
+<input id="myInput2" type="number">
+<button id="myButton">KORRUTA!</button>
+<br><br>
+<table id="myTable" border="1">
+    <script>
+        myButton.onclick = function () {
+            let number1 = document.getElementById("myInput1").value;
+            if (number1<0){
+                let count1 = Math.abs(number1);
+                let moderatorI = "i--";
+
+            }
+            let number2 = document.getElementById("myInput2").value;
+            let rowElement = document.createElement("tr");
+            for (let i = 1; i <= number1; i++) {
+                let rowElement = document.createElement("tr");
+                for (let j = 1; j <= number2; j++) {
+                    let cellElement = document.createElement("td");
+                    cellElement.innerText = i * j;
+                    rowElement.append(cellElement);
+                }
+                let myTable = document.getElementById("myTable");
+                myTable.append(rowElement);
+            }
+        }
+    </script>
+</body>
+</html>

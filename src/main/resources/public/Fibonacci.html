@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fibonacci</title>
+</head>
+<body>
+<input id="myInput" type="number"/>
+<button id="myButton">Arvuta</button><br><br>
+<div id="content"></div>
+    <script>
+        myButton.onclick = function () {
+            let number = document.getElementById("myInput").value;
+            let esimene = 0;
+            let teine = 1;
+            let fib = 0;
+            let contenz = document.createElement("contenz");
+            let myTable = document.createElement("table");
+            for (let x = 0; x < number; x++) {
+                let rowElement = document.createElement("tr");
+                let cellElement = document.createElement("td");
+                fib = esimene + teine;
+                esimene = teine;
+                teine = fib;
+                cellElement.innerText = fib;
+                rowElement.append(cellElement);
+                contenz.append(rowElement);
+                contenz.setAttribute("border", "1");
+                myTable.append(contenz);
+                content.append(myTable);
+            }
+        }
+    </script>
+</body>
+</html>
