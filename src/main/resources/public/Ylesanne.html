@@ -8,8 +8,8 @@
 
 <button id="myButton">Nupp</button>
 <input id="myInput" type="number">
-<table id="myTable" , border="1">
-</table>
+<br><br>
+<table id="myTable" , border="1"></table>
 
 <script>
 
@@ -21,21 +21,16 @@
 
     let myButton = document.getElementById("myButton");
     myButton.onclick = function () {
-
         let myInput = document.getElementById("myInput").value;
         let rowElement = document.createElement("tr");
-
         for (let x = 1; x <= myInput; x++) {
             let cellElement = document.createElement("td");
             cellElement.innerText = x;
             rowElement.append(cellElement);
-
         }
         let myTable = document.getElementById("myTable");
         myTable.append(rowElement);
-
     }
-
 </script>
 </body>
 </html>
